@@ -15,15 +15,15 @@ prod_ban = data_limpia %>%
             filter(Elemento == 'Producción' & Producto == 'Bananos')
 
 prod_ban_gr = prod_ban %>%
-  filter(Área %in% c('Costa Rica', 'Colombia', 'Guatemala')) %>%
+  filter(Área %in% c('Costa Rica', 'Colombia', 'Ecuador')) %>%
   mutate(quinquenio = as.integer(cut(Año, breaks = seq(1960, 2025, by = 5)))) %>%
   group_by(quinquenio, Área)
 
-tabla1 = summarise(prod_ban_gr, minimo=min(Valor, na.rm = TRUE), promedio=mean(Valor), maximo=max(Valor, na.rm = TRUE))
+tabla1 = summarise(prod_ban_gr, minimo=min(Valor, na.rm = TRUE), promedio=mean(Valor), maximo=max(Valor, na.rm = TRUE), sd=sd(Valor))
 quinq <- c('1960-1964', '1965-1969', '1970-1974', '1975-1979', '1980-1984', '1985-1989', '1990-1994', '1995-1999', '2000-2004', '2005-2009', '2010-2014', '2015-2019', '2020-2024')
 tabla1$quinquenio <- quinq[match(tabla1$quinquenio, 1:13)]
 
-tabla1 <- tabla1[with(tabla1, order(tabla1$Área)), c(2, 1, 3, 4, 5)]
+tabla1 <- tabla1[with(tabla1, order(tabla1$Área)), c(2, 1, 3, 4, 5, 6)]
 
 t1 <- prod_ban_gr %>%
   summarise(promedio=mean(Valor)) 
@@ -39,7 +39,7 @@ prod_pin = data_limpia %>%
   filter(Elemento == 'Producción' & Producto == 'Piña tropical')
 
 prod_pin_gr = prod_pin %>%
-  filter(Área %in% c('Costa Rica', 'Colombia', 'Guatemala')) %>%
+  filter(Área %in% c('Costa Rica', 'Brasil', 'Filipinas')) %>%
   mutate(quinquenio = as.integer(cut(Año, breaks = seq(1960, 2025, by = 5)))) %>%
   group_by(quinquenio, Área)
 
@@ -64,7 +64,7 @@ prod_caf = data_limpia %>%
   filter(Elemento == 'Producción' & Producto == 'Café, verde')
 
 prod_caf_gr = prod_caf %>%
-  filter(Área %in% c('Costa Rica', 'Colombia', 'Guatemala')) %>%
+  filter(Área %in% c('Costa Rica', 'Brasil', 'Viet Nam')) %>%
   mutate(quinquenio = as.integer(cut(Año, breaks = seq(1960, 2025, by = 5)))) %>%
   group_by(quinquenio, Área)
 
@@ -83,9 +83,9 @@ t3 <- t3 %>%
 t3$quinquenio <- quinq[match(t3$quinquenio, 1:13)]
 
 # plot1
-
+options(scipen= 999)
 prod_ban_pai <- prod_ban %>%
-                  filter(Área %in% c('Costa Rica', 'Colombia', 'Guatemala', 'Ecuador'))
+                  filter(Área %in% c('Costa Rica', 'Colombia', 'Ecuador'))
 
 ggplot(prod_ban_pai, mapping = aes(x=Área, y=Valor, color=Área)) +
   geom_boxplot() +
@@ -97,7 +97,7 @@ prod_area_caf = data_limpia %>%
   filter(Elemento %in% c('Área cosechada', 'Producción') & Producto == 'Café, verde')
 
 pr_ar_caf_pai <- prod_area_caf %>%
-  filter(Área %in% c('Costa Rica', 'Colombia', 'Guatemala', 'Ecuador')) %>%
+  filter(Área %in% c('Costa Rica', 'Brasil', 'Viet Nam')) %>%
   select(Área, Elemento, Valor, Año)
 
 pr_ar_caf_pai <- pr_ar_caf_pai %>% pivot_wider(id_cols = c(Área, Año), names_from = Elemento, values_from = Valor)
@@ -110,7 +110,7 @@ ggplot(pr_ar_caf_pai, mapping = aes(x=Año, y=Producción, color=Área)) +
 
 area_pin = data_limpia %>%
   filter(Elemento %in% c('Área cosechada') & Producto == 'Piña tropical') %>%
-  filter(Área %in% c('Costa Rica', 'Colombia', 'Guatemala', 'Ecuador'))
+  filter(Área %in% c('Costa Rica', 'Brasil', 'Filipinas'))
 
 ggplot(area_pin, mapping = aes(x=Área, y=Valor, color=Área)) +
   geom_point() +
