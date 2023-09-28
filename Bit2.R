@@ -19,11 +19,27 @@ prod_ban_gr = prod_ban %>%
   mutate(quinquenio = as.integer(cut(Año, breaks = seq(1960, 2025, by = 5)))) %>%
   group_by(quinquenio, Área)
 
-tabla1 = summarise(prod_ban_gr, minimo=min(Valor, na.rm = TRUE), promedio=mean(Valor), maximo=max(Valor, na.rm = TRUE), sd=sd(Valor))
-quinq <- c('1960-1964', '1965-1969', '1970-1974', '1975-1979', '1980-1984', '1985-1989', '1990-1994', '1995-1999', '2000-2004', '2005-2009', '2010-2014', '2015-2019', '2020-2024')
+tabla1 = summarise(prod_ban_gr, minimo=min(Valor, na.rm = TRUE), 
+                   promedio=mean(Valor), maximo=max(Valor, na.rm = TRUE), 
+                   sd=sd(Valor), median=quantile(Valor, 0.5), 
+                   q1=quantile(Valor, 0.25), q3=quantile(Valor, 0.75)
+                   )
+
+quinq <- c('1960-1964', '1965-1969', '1970-1974', '1975-1979', '1980-1984', 
+           '1985-1989', '1990-1994', '1995-1999', '2000-2004', '2005-2009',
+           '2010-2014', '2015-2019', '2020-2024')
+
 tabla1$quinquenio <- quinq[match(tabla1$quinquenio, 1:13)]
 
-tabla1 <- tabla1[with(tabla1, order(tabla1$Área)), c(2, 1, 3, 4, 5, 6)]
+tabla1 <- tabla1[with(tabla1, order(tabla1$Área)), c(2, 1, 3, 4, 5, 6, 7, 8, 9)]
+
+tabla1_id_quin <- tabla1 %>% pivot_wider(id_cols = quinquenio, names_from = Área,
+                                 values_from = c(sd, promedio, maximo, minimo, q1, median, q3) )
+
+tabla1_id_area <- tabla1 %>% 
+  pivot_longer(cols = c(sd, promedio, maximo, minimo, q1, median, q3),
+               names_to = 'Estadístico', values_to = 'Valor') %>%
+  pivot_wider(id_cols = c(Área, Estadístico), names_from = quinquenio, values_from = Valor)
 
 t1 <- prod_ban_gr %>%
   summarise(promedio=mean(Valor)) 
@@ -43,11 +59,27 @@ prod_pin_gr = prod_pin %>%
   mutate(quinquenio = as.integer(cut(Año, breaks = seq(1960, 2025, by = 5)))) %>%
   group_by(quinquenio, Área)
 
-tabla2 = summarise(prod_pin_gr, minimo=min(Valor, na.rm = TRUE), promedio=mean(Valor), maximo=max(Valor, na.rm = TRUE))
-quinq <- c('1960-1964', '1965-1969', '1970-1974', '1975-1979', '1980-1984', '1985-1989', '1990-1994', '1995-1999', '2000-2004', '2005-2009', '2010-2014', '2015-2019', '2020-2024')
+tabla2 = summarise(prod_pin_gr, minimo=min(Valor, na.rm = TRUE), 
+                   promedio=mean(Valor), maximo=max(Valor, na.rm = TRUE), 
+                   sd=sd(Valor), median=quantile(Valor, 0.5), 
+                   q1=quantile(Valor, 0.25), q3=quantile(Valor, 0.75)
+)
+
+quinq <- c('1960-1964', '1965-1969', '1970-1974', '1975-1979', '1980-1984', 
+           '1985-1989', '1990-1994', '1995-1999', '2000-2004', '2005-2009',
+           '2010-2014', '2015-2019', '2020-2024')
+
 tabla2$quinquenio <- quinq[match(tabla2$quinquenio, 1:13)]
 
-tabla2 <- tabla2[with(tabla2, order(tabla2$Área)), c(2, 1, 3, 4, 5)]
+tabla2 <- tabla1[with(tabla2, order(tabla2$Área)), c(2, 1, 3, 4, 5, 6, 7, 8, 9)]
+
+tabla2_id_quin <- tabla1 %>% pivot_wider(id_cols = quinquenio, names_from = Área,
+                                         values_from = c(sd, promedio, maximo, minimo, q1, median, q3) )
+
+tabla2_id_area <- tabla2 %>% 
+  pivot_longer(cols = c(sd, promedio, maximo, minimo, q1, median, q3),
+               names_to = 'Estadístico', values_to = 'Valor') %>%
+  pivot_wider(id_cols = c(Área, Estadístico), names_from = quinquenio, values_from = Valor)
 
 t2 <- prod_pin_gr %>%
   summarise(promedio=mean(Valor)) 
@@ -68,11 +100,27 @@ prod_caf_gr = prod_caf %>%
   mutate(quinquenio = as.integer(cut(Año, breaks = seq(1960, 2025, by = 5)))) %>%
   group_by(quinquenio, Área)
 
-tabla3 = summarise(prod_caf_gr, minimo=min(Valor, na.rm = TRUE), promedio=mean(Valor), maximo=max(Valor, na.rm = TRUE))
-quinq <- c('1960-1964', '1965-1969', '1970-1974', '1975-1979', '1980-1984', '1985-1989', '1990-1994', '1995-1999', '2000-2004', '2005-2009', '2010-2014', '2015-2019', '2020-2024')
+tabla3 = summarise(prod_caf_gr, minimo=min(Valor, na.rm = TRUE), 
+                   promedio=mean(Valor), maximo=max(Valor, na.rm = TRUE), 
+                   sd=sd(Valor), median=quantile(Valor, 0.5), 
+                   q1=quantile(Valor, 0.25), q3=quantile(Valor, 0.75)
+)
+
+quinq <- c('1960-1964', '1965-1969', '1970-1974', '1975-1979', '1980-1984', 
+           '1985-1989', '1990-1994', '1995-1999', '2000-2004', '2005-2009',
+           '2010-2014', '2015-2019', '2020-2024')
+
 tabla3$quinquenio <- quinq[match(tabla3$quinquenio, 1:13)]
 
-tabla3 <- tabla3[with(tabla3, order(tabla3$Área)), c(2, 1, 3, 4, 5)]
+tabla3 <- tabla1[with(tabla3, order(tabla3$Área)), c(2, 1, 3, 4, 5, 6, 7, 8, 9)]
+
+tabla3_id_quin <- tabla3 %>% pivot_wider(id_cols = quinquenio, names_from = Área,
+                                         values_from = c(sd, promedio, maximo, minimo, q1, median, q3) )
+
+tabla3_id_area <- tabla3 %>% 
+  pivot_longer(cols = c(sd, promedio, maximo, minimo, q1, median, q3),
+               names_to = 'Estadístico', values_to = 'Valor') %>%
+  pivot_wider(id_cols = c(Área, Estadístico), names_from = quinquenio, values_from = Valor)
 
 t3 <- prod_caf_gr %>%
   summarise(promedio=mean(Valor)) 
