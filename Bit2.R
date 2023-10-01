@@ -8,7 +8,9 @@ library(cowplot)
 #data incial
 data = read.csv('cultivos_global.csv')
 data_limpia = data %>%
-          select(c('Área', 'Elemento', 'Producto', 'Año', 'Unidad', 'Valor'))
+          select(c('Área', 'Elemento', 'Producto', 'Año', 'Unidad', 'Valor')) %>%
+          mutate(Valor = Valor/10000)
+
 
 #tabla1
 prod_ban = data_limpia %>%
@@ -71,7 +73,7 @@ quinq <- c('1960-1964', '1965-1969', '1970-1974', '1975-1979', '1980-1984',
 
 tabla2$quinquenio <- quinq[match(tabla2$quinquenio, 1:13)]
 
-tabla2 <- tabla1[with(tabla2, order(tabla2$Área)), c(2, 1, 3, 4, 5, 6, 7, 8, 9)]
+tabla2 <- tabla2[with(tabla2, order(tabla2$Área)), c(2, 1, 3, 4, 5, 6, 7, 8, 9)]
 
 tabla2_id_quin <- tabla1 %>% pivot_wider(id_cols = quinquenio, names_from = Área,
                                          values_from = c(sd, promedio, maximo, minimo, q1, median, q3) )
@@ -112,7 +114,7 @@ quinq <- c('1960-1964', '1965-1969', '1970-1974', '1975-1979', '1980-1984',
 
 tabla3$quinquenio <- quinq[match(tabla3$quinquenio, 1:13)]
 
-tabla3 <- tabla1[with(tabla3, order(tabla3$Área)), c(2, 1, 3, 4, 5, 6, 7, 8, 9)]
+tabla3 <- tabla3[with(tabla3, order(tabla3$Área)), c(2, 1, 3, 4, 5, 6, 7, 8, 9)]
 
 tabla3_id_quin <- tabla3 %>% pivot_wider(id_cols = quinquenio, names_from = Área,
                                          values_from = c(sd, promedio, maximo, minimo, q1, median, q3) )
@@ -130,14 +132,25 @@ t3 <- t3 %>%
 
 t3$quinquenio <- quinq[match(t3$quinquenio, 1:13)]
 
-# plot1
+# plots
 options(scipen= 999)
+#Dimensiones para todos los gráficos 
+h<-5
+w<-h*1.6
+
+# plot 1
 prod_ban_pai <- prod_ban %>%
                   filter(Área %in% c('Costa Rica', 'Colombia', 'Ecuador'))
 
 ggplot(prod_ban_pai, mapping = aes(x=Área, y=Valor, color=Área)) +
   geom_boxplot() +
+  labs(x = "País",
+       y = "Producción",
+       title=" ",
+       color = 'País')+ 
   theme_cowplot(12)
+
+ggsave(filename = "BoxPlot.pdf", width = w, height = h, plot = last_plot())
 
 # plot2
 
@@ -151,8 +164,19 @@ pr_ar_caf_pai <- prod_area_caf %>%
 pr_ar_caf_pai <- pr_ar_caf_pai %>% pivot_wider(id_cols = c(Área, Año), names_from = Elemento, values_from = Valor)
 
 ggplot(pr_ar_caf_pai, mapping = aes(x=Año, y=Producción, color=Área)) +
-  geom_line() +
+  geom_line(linewidth=1) +
+  labs(x = "País",
+       y = "Producción",
+       title=" ",
+       color = 'País')+ 
   theme_cowplot(12)
+
+ggsave(filename = "LinePlot.pdf", width = w, height = h, plot = last_plot())
+
+# evitar graf con tiempos
+# ver como quitar el tiempo a la variable : 
+# calcular alguna tasa o algo que no dependa del tiempo f(tasa de crecimiento)
+# produccion por hectarea. ver como quitar 
 
 # plot3
 
@@ -161,5 +185,11 @@ area_pin = data_limpia %>%
   filter(Área %in% c('Costa Rica', 'Brasil', 'Filipinas'))
 
 ggplot(area_pin, mapping = aes(x=Área, y=Valor, color=Área)) +
-  geom_point() +
+  geom_point(size=1.5) +
+  labs(x = "País",
+       y = "Producción",
+       title=" ",
+       color = 'País')+
   theme_cowplot(12)
+
+ggsave(filename = "PointPlot.pdf", width = w, height = h, plot = last_plot())
