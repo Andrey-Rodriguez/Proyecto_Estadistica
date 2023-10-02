@@ -6,8 +6,9 @@ library(cowplot)
 # print(xtable(prod_ban_wide2), include.rownames = FALSE)
 
 #data incial
-data = read.csv('cultivos_global.csv')
-data_limpia = data %>%
+cultivos_global <- read_csv("GitHub/Proyecto_Estadistica/cultivos_global.csv")
+data = cultivos_global
+data_limpia = cultivos_global %>%
           select(c('Área', 'Elemento', 'Producto', 'Año', 'Unidad', 'Valor'))
 
 #tabla1
@@ -36,10 +37,10 @@ tabla1 <- tabla1[with(tabla1, order(tabla1$Área)), c(2, 1, 3, 4, 5, 6, 7, 8, 9)
 tabla1_id_quin <- tabla1 %>% pivot_wider(id_cols = quinquenio, names_from = Área,
                                  values_from = c(sd, promedio, maximo, minimo, q1, median, q3) )
 
-tabla1_id_area <- tabla1 %>% 
+tabla1_id_Área <- tabla1 %>% 
   pivot_longer(cols = c(sd, promedio, maximo, minimo, q1, median, q3),
-               names_to = 'Estadístico', values_to = 'Valor') %>%
-  pivot_wider(id_cols = c(Área, Estadístico), names_from = quinquenio, values_from = Valor)
+               names_to = 'Estadistico', values_to = 'Valor') %>%
+  pivot_wider(id_cols = c(Área, Estadistico), names_from = quinquenio, values_from = Valor)
 
 t1 <- prod_ban_gr %>%
   summarise(promedio=mean(Valor)) 
@@ -76,10 +77,10 @@ tabla2 <- tabla1[with(tabla2, order(tabla2$Área)), c(2, 1, 3, 4, 5, 6, 7, 8, 9)
 tabla2_id_quin <- tabla1 %>% pivot_wider(id_cols = quinquenio, names_from = Área,
                                          values_from = c(sd, promedio, maximo, minimo, q1, median, q3) )
 
-tabla2_id_area <- tabla2 %>% 
+tabla2_id_Área <- tabla2 %>% 
   pivot_longer(cols = c(sd, promedio, maximo, minimo, q1, median, q3),
-               names_to = 'Estadístico', values_to = 'Valor') %>%
-  pivot_wider(id_cols = c(Área, Estadístico), names_from = quinquenio, values_from = Valor)
+               names_to = 'Estadistico', values_to = 'Valor') %>%
+  pivot_wider(id_cols = c(Área, Estadistico), names_from = quinquenio, values_from = Valor)
 
 t2 <- prod_pin_gr %>%
   summarise(promedio=mean(Valor)) 
@@ -117,10 +118,10 @@ tabla3 <- tabla1[with(tabla3, order(tabla3$Área)), c(2, 1, 3, 4, 5, 6, 7, 8, 9)
 tabla3_id_quin <- tabla3 %>% pivot_wider(id_cols = quinquenio, names_from = Área,
                                          values_from = c(sd, promedio, maximo, minimo, q1, median, q3) )
 
-tabla3_id_area <- tabla3 %>% 
+tabla3_id_Área <- tabla3 %>% 
   pivot_longer(cols = c(sd, promedio, maximo, minimo, q1, median, q3),
-               names_to = 'Estadístico', values_to = 'Valor') %>%
-  pivot_wider(id_cols = c(Área, Estadístico), names_from = quinquenio, values_from = Valor)
+               names_to = 'Estadistico', values_to = 'Valor') %>%
+  pivot_wider(id_cols = c(Área, Estadistico), names_from = quinquenio, values_from = Valor)
 
 t3 <- prod_caf_gr %>%
   summarise(promedio=mean(Valor)) 
@@ -141,10 +142,10 @@ ggplot(prod_ban_pai, mapping = aes(x=Área, y=Valor, color=Área)) +
 
 # plot2
 
-prod_area_caf = data_limpia %>%
+prod_Área_caf = data_limpia %>%
   filter(Elemento %in% c('Área cosechada', 'Producción') & Producto == 'Café, verde')
 
-pr_ar_caf_pai <- prod_area_caf %>%
+pr_ar_caf_pai <- prod_Área_caf %>%
   filter(Área %in% c('Costa Rica', 'Brasil', 'Viet Nam')) %>%
   select(Área, Elemento, Valor, Año)
 
@@ -156,10 +157,88 @@ ggplot(pr_ar_caf_pai, mapping = aes(x=Año, y=Producción, color=Área)) +
 
 # plot3
 
-area_pin = data_limpia %>%
+Área_pin = data_limpia %>%
   filter(Elemento %in% c('Área cosechada') & Producto == 'Piña tropical') %>%
   filter(Área %in% c('Costa Rica', 'Brasil', 'Filipinas'))
 
-ggplot(area_pin, mapping = aes(x=Área, y=Valor, color=Área)) +
+ggplot(Área_pin, mapping = aes(x=Área, y=Valor, color=Área)) +
   geom_point() +
   theme_cowplot(12)
+
+############
+#Pruebas de Hipotesis 
+
+#Roto las columnas para poder hacer el tes de ANOVA para 
+#BANANO
+datosaov_ban<-tabla1_id_quin %>%
+ pivot_longer(cols=starts_with("promedio"),names_to = "Pais",values_to = "Produccion" )
+
+#Elimino las columnas inecesarias
+datosaov_ban<-datosaov_ban%>%
+  select(quinquenio,Pais,Produccion)
+
+#Vamos a realizar un proceso recursivo donde vamos a realizar un aov para cada quique?o 
+
+resultados_anova_ban <- list()
+for (quinquenio in quinq) {
+  datos_quinquenio <- datosaov_ban %>%
+    filter(quinquenio == quinquenio)
+  modelo_anova <- aov(Produccion ~ Pais, data = datos_quinquenio)
+  resultados_anova_ban[[quinquenio]] <- summary(modelo_anova)
+}
+
+#Imprimir los resultados 
+for (quinquenio in quinq) {
+  cat("Quinquenio:", quinquenio, "\n")
+  print(resultados_anova_ban[[quinquenio]])
+}
+
+#Roto las columnas para poder hacer el tes de ANOVA para 
+#Cafe
+datosaov_caf<-tabla2_id_quin %>%
+  pivot_longer(cols=starts_with("promedio"),names_to = "Pais",values_to = "Produccion" )
+
+#Elimino las columnas inecesarias
+datosaov_caf<-datosaov_caf%>%
+  select(quinquenio,Pais,Produccion)
+
+#Vamos a realizar un proceso recursivo donde vamos a realizar un aov para cada quique?o 
+
+resultados_anova_caf <- list()
+for (quinquenio in quinq) {
+  datos_quinquenio <- datosaov_caf %>%
+    filter(quinquenio == quinquenio)
+  modelo_anova <- aov(Produccion ~ Pais, data = datos_quinquenio)
+  resultados_anova_caf[[quinquenio]] <- summary(modelo_anova)
+}
+
+#Imprimir los resultados 
+for (quinquenio in quinq) {
+  cat("Quinquenio:", quinquenio, "\n")
+  print(resultados_anova_caf[[quinquenio]])
+}
+#Roto las columnas para poder hacer el tes de ANOVA para 
+#PiñaTropical
+datosaov_pin<-tabla3_id_quin %>%
+  pivot_longer(cols=starts_with("promedio"),names_to = "Pais",values_to = "Produccion" )
+
+#Elimino las columnas inecesarias
+datosaov_cpin<-datosaov_pin%>%
+  select(quinquenio,Pais,Produccion)
+
+#Vamos a realizar un proceso recursivo donde vamos a realizar un aov para cada quique?o 
+
+resultados_anova_pin <- list()
+for (quinquenio in quinq) {
+  datos_quinquenio <- datosaov_caf %>%
+    filter(quinquenio == quinquenio)
+  modelo_anova <- aov(Produccion ~ Pais, data = datos_quinquenio)
+  resultados_anova_pin[[quinquenio]] <- summary(modelo_anova)
+}
+
+#Imprimir los resultados 
+for (quinquenio in quinq) {
+  cat("Quinquenio:", quinquenio, "\n")
+  print(resultados_anova_pin[[quinquenio]])
+}
+
