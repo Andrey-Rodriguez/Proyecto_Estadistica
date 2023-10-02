@@ -242,3 +242,53 @@ for (quinquenio in quinq) {
   print(resultados_anova_pin[[quinquenio]])
 }
 
+##
+#resultados<-list()
+#for(quinquenio in quinq){
+#  datos_quinquenio<-tabla1_id_quin %>%
+#    filter(quinquenio==quinquenio)
+  modelo_anova<-aov(cbind(tabla1_id_quin$''promedio_Colombia'',tabla1_id_quin$`promedio_Costa Rica`,tabla1_id_quin$promedio_Ecuador)~ 1,data=tabla1_id_quin)
+#  resultados[[quinquenio]]<-summary(modelo_anova)
+#}
+
+#for (quinquenio in quinq) {
+#  cat("Quinquenio:", quinquenio, "\n")
+#  print(resultados[[quinquenio]])
+#}
+
+#T test
+#banano
+  
+  
+  res1_ban<-t.test(tabla1_id_quin[["promedio_Colombia"]],tabla1_id_quin[["promedio_Costa Rica"]])
+  res2_ban<-t.test(tabla1_id_quin[["promedio_Colombia"]],tabla1_id_quin[["promedio_Ecuador"]])  
+  res3_ban<-t.test(tabla1_id_quin[["promedio_Ecuador"]],tabla1_id_quin[["promedio_Costa Rica"]])  
+
+  print(res1_ban) 
+  print(res2_ban) 
+  print(res3_ban) 
+  
+  
+  #T test
+  #cafe
+  
+  
+  res1_caf<-t.test(tabla2_id_quin[["promedio_Colombia"]],tabla2_id_quin[["promedio_Costa Rica"]])
+  res2_caf<-t.test(tabla2_id_quin[["promedio_Colombia"]],tabla2_id_quin[["promedio_Ecuador"]])  
+  res3_caf<-t.test(tabla2_id_quin[["promedio_Ecuador"]],tabla2_id_quin[["promedio_Costa Rica"]])  
+  
+  print(res1_caf) 
+  print(res2_caf) 
+  print(res3_caf) 
+
+  #ttest
+  #Piña
+  
+  res1_pin<-t.test(tabla3_id_quin[["promedio_Colombia"]],tabla3_id_quin[["promedio_Costa Rica"]])
+  res2_pin<-t.test(tabla3_id_quin[["promedio_Colombia"]],tabla3_id_quin[["promedio_Ecuador"]])  
+  res3_pin<-t.test(tabla3_id_quin[["promedio_Ecuador"]],tabla3_id_quin[["promedio_Costa Rica"]])  
+  
+  print(res1_pin) 
+  print(res2_pin) 
+  print(res3_pin) 
+  
