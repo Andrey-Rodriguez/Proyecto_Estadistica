@@ -6,7 +6,7 @@ library(cowplot)
 # print(xtable(prod_ban_wide2), include.rownames = FALSE)
 
 #data incial
-cultivos_global <- read_csv("GitHub/Proyecto_Estadistica/cultivos_global.csv")
+cultivos_global <- cultivos_global <- read_csv("cultivos_global.csv")
 data = cultivos_global
 data_limpia = cultivos_global %>%
           select(c('Área', 'Elemento', 'Producto', 'Año', 'Unidad', 'Valor'))
@@ -247,7 +247,7 @@ for (quinquenio in quinq) {
 #for(quinquenio in quinq){
 #  datos_quinquenio<-tabla1_id_quin %>%
 #    filter(quinquenio==quinquenio)
-  modelo_anova<-aov(cbind(tabla1_id_quin$''promedio_Colombia'',tabla1_id_quin$`promedio_Costa Rica`,tabla1_id_quin$promedio_Ecuador)~ 1,data=tabla1_id_quin)
+# modelo_anova<-aov(cbind(tabla1_id_quin$''promedio_Colombia'',tabla1_id_quin$`promedio_Costa Rica`,tabla1_id_quin$promedio_Ecuador)~ 1,data=tabla1_id_quin)
 #  resultados[[quinquenio]]<-summary(modelo_anova)
 #}
 
@@ -260,9 +260,9 @@ for (quinquenio in quinq) {
 #banano
   
   
-  res1_ban<-t.test(tabla1_id_quin[["promedio_Colombia"]],tabla1_id_quin[["promedio_Costa Rica"]])
-  res2_ban<-t.test(tabla1_id_quin[["promedio_Colombia"]],tabla1_id_quin[["promedio_Ecuador"]])  
-  res3_ban<-t.test(tabla1_id_quin[["promedio_Ecuador"]],tabla1_id_quin[["promedio_Costa Rica"]])  
+  res1_ban<-t.test(t1[["Colombia"]],t1[["Costa Rica"]])
+  res2_ban<-t.test(t1[["Colombia"]],t1[["Ecuador"]])  
+  res3_ban<-t.test(t1[["Ecuador"]],t1[["Costa Rica"]])  
 
   print(res1_ban) 
   print(res2_ban) 
@@ -273,9 +273,9 @@ for (quinquenio in quinq) {
   #cafe
   
   
-  res1_caf<-t.test(tabla2_id_quin[["promedio_Colombia"]],tabla2_id_quin[["promedio_Costa Rica"]])
-  res2_caf<-t.test(tabla2_id_quin[["promedio_Colombia"]],tabla2_id_quin[["promedio_Ecuador"]])  
-  res3_caf<-t.test(tabla2_id_quin[["promedio_Ecuador"]],tabla2_id_quin[["promedio_Costa Rica"]])  
+  res1_caf<-t.test(t2[["Brasil"]],t2[["Costa Rica"]])
+  res2_caf<-t.test(t2[["Filipinas"]],t2[["Brasil"]])  
+  res3_caf<-t.test(t2[["Costa Rica"]],t2[["Filipinas"]])  
   
   print(res1_caf) 
   print(res2_caf) 
@@ -284,9 +284,9 @@ for (quinquenio in quinq) {
   #ttest
   #Piña
   
-  res1_pin<-t.test(tabla3_id_quin[["promedio_Colombia"]],tabla3_id_quin[["promedio_Costa Rica"]])
-  res2_pin<-t.test(tabla3_id_quin[["promedio_Colombia"]],tabla3_id_quin[["promedio_Ecuador"]])  
-  res3_pin<-t.test(tabla3_id_quin[["promedio_Ecuador"]],tabla3_id_quin[["promedio_Costa Rica"]])  
+  res1_pin<-t.test(t3[["Brasil"]],t3[["Costa Rica"]])
+  res2_pin<-t.test(t3[["Brasil"]],t3[["Viet Nam"]])  
+  res3_pin<-t.test(t3[["Viet Nam"]],t3[["Costa Rica"]])  
   
   print(res1_pin) 
   print(res2_pin) 
