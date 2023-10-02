@@ -6,7 +6,7 @@ library(cowplot)
 # print(xtable(prod_ban_wide2), include.rownames = FALSE)
 
 #data incial
-cultivos_global <- cultivos_global <- read_csv("cultivos_global.csv")
+cultivos_global <- read_csv("GitHub/Proyecto_Estadistica/cultivos_global.csv")
 data = cultivos_global
 data_limpia = cultivos_global %>%
           select(c('Área', 'Elemento', 'Producto', 'Año', 'Unidad', 'Valor'))
@@ -170,8 +170,8 @@ ggplot(Área_pin, mapping = aes(x=Área, y=Valor, color=Área)) +
 
 #Roto las columnas para poder hacer el tes de ANOVA para 
 #BANANO
-datosaov_ban<-tabla1_id_quin %>%
- pivot_longer(cols=starts_with("promedio"),names_to = "Pais",values_to = "Produccion" )
+datosaov_ban<-t1 %>%
+ pivot_longer(cols=c("Colombia","Costa Rica","Ecuador"),names_to = "Pais",values_to = "Produccion" )
 
 #Elimino las columnas inecesarias
 datosaov_ban<-datosaov_ban%>%
@@ -195,8 +195,8 @@ for (quinquenio in quinq) {
 
 #Roto las columnas para poder hacer el tes de ANOVA para 
 #Cafe
-datosaov_caf<-tabla2_id_quin %>%
-  pivot_longer(cols=starts_with("promedio"),names_to = "Pais",values_to = "Produccion" )
+datosaov_caf<-t2 %>%
+  pivot_longer(cols=c("Brasil","Costa Rica","Filipinas"),names_to = "Pais",values_to = "Produccion" )
 
 #Elimino las columnas inecesarias
 datosaov_caf<-datosaov_caf%>%
@@ -219,8 +219,8 @@ for (quinquenio in quinq) {
 }
 #Roto las columnas para poder hacer el tes de ANOVA para 
 #PiñaTropical
-datosaov_pin<-tabla3_id_quin %>%
-  pivot_longer(cols=starts_with("promedio"),names_to = "Pais",values_to = "Produccion" )
+datosaov_pin<-t3 %>%
+  pivot_longer(cols=c("Brasil","Costa Rica","Viet Nam"),names_to = "Pais",values_to = "Produccion" )
 
 #Elimino las columnas inecesarias
 datosaov_cpin<-datosaov_pin%>%
@@ -291,4 +291,5 @@ for (quinquenio in quinq) {
   print(res1_pin) 
   print(res2_pin) 
   print(res3_pin) 
+  
   
