@@ -170,8 +170,16 @@ ggplot(Área_pin, mapping = aes(x=Área, y=Valor, color=Área)) +
 
 #Roto las columnas para poder hacer el tes de ANOVA para 
 #BANANO
+
+paises_ban<-c("Colombia","Costa Rica","Ecuador")
 datosaov_ban<-t1 %>%
- pivot_longer(cols=c("Colombia","Costa Rica","Ecuador"),names_to = "Pais",values_to = "Produccion" )
+ pivot_longer(cols=paises_ban,names_to = "Pais",values_to = "Produccion" )
+
+#datos_lol<-aov(Produccion ~ Pais,data=datosaov_ban)
+#print(summary(datos_lol))
+
+#TukeyHSD(datos_lol, paises_ban , ordered = TRUE, conf.level = 0.95)
+
 
 #Elimino las columnas inecesarias
 datosaov_ban<-datosaov_ban%>%
@@ -272,12 +280,13 @@ for (quinquenio in quinq) {
   #T test
   #cafe
   
-  
+  #res1_caf2<-t.test(t2[["Brasil"]],t2[["Costa Rica"]],paired = TRUE, alternative = "two.sided")
   res1_caf<-t.test(t2[["Brasil"]],t2[["Costa Rica"]])
   res2_caf<-t.test(t2[["Filipinas"]],t2[["Brasil"]])  
   res3_caf<-t.test(t2[["Costa Rica"]],t2[["Filipinas"]])  
   
   print(res1_caf) 
+  #print(res1_caf2)
   print(res2_caf) 
   print(res3_caf) 
 
