@@ -177,32 +177,15 @@ paises_ban<-c("Colombia","Costa Rica","Ecuador")
 datosaov_ban<-t1 %>%
  pivot_longer(cols=paises_ban,names_to = "Pais",values_to = "Produccion" )
 
-#datos_lol<-aov(Produccion ~ Pais,data=datosaov_ban)
-#print(summary(datos_lol))
-
-#TukeyHSD(datos_lol, paises_ban , ordered = TRUE, conf.level = 0.95)
-
 
 #Elimino las columnas inecesarias
 datosaov_ban<-datosaov_ban%>%
   select(quinquenio,Pais,Produccion)
 
-#Vamos a realizar un proceso recursivo donde vamos a realizar un aov para cada quique?o 
+modelo_anovaBan<-aov(Produccion ~ Pais, data = datosaov_ban)
+print(summary(modelo_anovaBan))
 
-resultados_anova_ban <- list()
-for (quinquenio in quinq) {
-  datos_quinquenio <- datosaov_ban %>%
-    filter(quinquenio == quinquenio)
-  modelo_anova <- aov(Produccion ~ Pais, data = datos_quinquenio)
-  resultados_anova_ban[[quinquenio]] <- summary(modelo_anova)
-}
-
-#Imprimir los resultados 
-for (quinquenio in quinq) {
-  cat("Quinquenio:", quinquenio, "\n")
-  print(resultados_anova_ban[[quinquenio]])
-}
-
+###
 #Roto las columnas para poder hacer el tes de ANOVA para 
 #Cafe
 datosaov_caf<-t2 %>%
@@ -212,61 +195,26 @@ datosaov_caf<-t2 %>%
 datosaov_caf<-datosaov_caf%>%
   select(quinquenio,Pais,Produccion)
 
-#Vamos a realizar un proceso recursivo donde vamos a realizar un aov para cada quique?o 
+#Modelo ANOVA
+modelo_anovaCaf<-aov(Produccion ~ Pais, data = datosaov_caf)
+print(summary(modelo_anovaCaf))
 
-resultados_anova_caf <- list()
-for (quinquenio in quinq) {
-  datos_quinquenio <- datosaov_caf %>%
-    filter(quinquenio == quinquenio)
-  modelo_anova <- aov(Produccion ~ Pais, data = datos_quinquenio)
-  resultados_anova_caf[[quinquenio]] <- summary(modelo_anova)
-}
-
-#Imprimir los resultados 
-for (quinquenio in quinq) {
-  cat("Quinquenio:", quinquenio, "\n")
-  print(resultados_anova_caf[[quinquenio]])
-}
+###
 #Roto las columnas para poder hacer el tes de ANOVA para 
 #PiñaTropical
 datosaov_pin<-t3 %>%
   pivot_longer(cols=c("Brasil","Costa Rica","Viet Nam"),names_to = "Pais",values_to = "Produccion" )
 
-modelo_anova21<-aov(Produccion ~ Pais, data = datos_quinquenio)
-
 #Elimino las columnas inecesarias
-datosaov_cpin<-datosaov_pin%>%
+datosaov_pin<-datosaov_pin%>%
   select(quinquenio,Pais,Produccion)
 
-#Vamos a realizar un proceso recursivo donde vamos a realizar un aov para cada quique?o 
+#Modelo ANOVA
+# Realizar la prueba ANOVA
+modelo_anovaPin <- aov(Produccion ~ Pais, data = datosaov_pin)
+resumen_anovaPin <- summary(modelo_anovaPin)
+print(resumen_anovaPin)
 
-resultados_anova_pin <- list()
-for (quinquenio in quinq) {
-  datos_quinquenio <- datosaov_caf %>%
-    filter(quinquenio == quinquenio)
-  modelo_anova <- aov(Produccion ~ Pais, data = datos_quinquenio)
-  resultados_anova_pin[[quinquenio]] <- summary(modelo_anova)
-}
-
-#Imprimir los resultados 
-for (quinquenio in quinq) {
-  cat("Quinquenio:", quinquenio, "\n")
-  print(resultados_anova_pin[[quinquenio]])
-}
-
-##
-#resultados<-list()
-#for(quinquenio in quinq){
-#  datos_quinquenio<-tabla1_id_quin %>%
-#    filter(quinquenio==quinquenio)
-# modelo_anova<-aov(cbind(tabla1_id_quin$''promedio_Colombia'',tabla1_id_quin$`promedio_Costa Rica`,tabla1_id_quin$promedio_Ecuador)~ 1,data=tabla1_id_quin)
-#  resultados[[quinquenio]]<-summary(modelo_anova)
-#}
-
-#for (quinquenio in quinq) {
-#  cat("Quinquenio:", quinquenio, "\n")
-#  print(resultados[[quinquenio]])
-#}
 
 #T test
 #banano
