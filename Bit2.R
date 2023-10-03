@@ -3,6 +3,8 @@ library(ggplot2)
 library(readxl)
 library(xtable)
 library(cowplot)
+library(broom)
+library(dplyr)
 # print(xtable(prod_ban_wide2), include.rownames = FALSE)
 
 #data incial
@@ -230,6 +232,8 @@ for (quinquenio in quinq) {
 datosaov_pin<-t3 %>%
   pivot_longer(cols=c("Brasil","Costa Rica","Viet Nam"),names_to = "Pais",values_to = "Produccion" )
 
+modelo_anova21<-aov(Produccion ~ Pais, data = datos_quinquenio)
+
 #Elimino las columnas inecesarias
 datosaov_cpin<-datosaov_pin%>%
   select(quinquenio,Pais,Produccion)
@@ -276,17 +280,38 @@ for (quinquenio in quinq) {
   print(res2_ban) 
   print(res3_ban) 
   
+  #Graficos
+
   
+ # resumen_resultado <- tidy(res1_ban)
+  # Crear un vector con los nombres de las variables
+  #variables <- c("Costa Rica", "Colombia")
+  #valores_estimados <- c(resumen_resultado$estimate1, resumen_resultado$estimate2)
+  #intervalos_confianza <- c(resumen_resultado$conf.low, resumen_resultado$conf.high)
+  # barplot(valores_estimados, 
+   #       names.arg = variables, 
+    #      ylim = range(intervalos_confianza), 
+     #     col = "skyblue", 
+      #    main = "Resultados de la prueba t",
+       #   xlab = "Variable",
+        #  ylab = "Valor estimado")
+#  arrows(1:2, intervalos_confianza[1,], 1:2, intervalos_confianza[2,], angle = 90, code = 3, length = 0.1, col = "darkblue")
+
+  
+  
+  
+  
+  
+  
+
   #T test
   #cafe
   
-  #res1_caf2<-t.test(t2[["Brasil"]],t2[["Costa Rica"]],paired = TRUE, alternative = "two.sided")
   res1_caf<-t.test(t2[["Brasil"]],t2[["Costa Rica"]])
   res2_caf<-t.test(t2[["Filipinas"]],t2[["Brasil"]])  
   res3_caf<-t.test(t2[["Costa Rica"]],t2[["Filipinas"]])  
   
   print(res1_caf) 
-  #print(res1_caf2)
   print(res2_caf) 
   print(res3_caf) 
 
@@ -299,6 +324,6 @@ for (quinquenio in quinq) {
   
   print(res1_pin) 
   print(res2_pin) 
-  print(res3_pin) 
+  print(res3_pin)  
   
   
