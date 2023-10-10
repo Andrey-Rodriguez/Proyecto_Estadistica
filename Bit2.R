@@ -8,12 +8,24 @@ library(ggplot2)
 library(readxl)
 library(xtable)
 library(cowplot)
+<<<<<<< HEAD
 
 #código para pasar tablas a .tex
 # print(xtable(-), include.rownames = FALSE)
 
 #data inicial (se cargan los datos totales)
 data = read.csv('cultivos_global.csv')
+=======
+library(broom)
+library(dplyr)
+# print(xtable(prod_ban_wide2), include.rownames = FALSE)
+
+#data incial
+cultivos_global <- read_csv("GitHub/Proyecto_Estadistica/cultivos_global.csv")
+data = cultivos_global
+data_limpia = cultivos_global %>%
+          select(c('Área', 'Elemento', 'Producto', 'Año', 'Unidad', 'Valor'))
+>>>>>>> 50bb6e7abd01f5b16bdb26237c74c1a0a2356360
 
 #seleccionamos las varibles relevantes.
 data_limpia = data %>%
@@ -52,11 +64,15 @@ tabla1 <- tabla1[with(tabla1, order(tabla1$Área)), c(2, 1, 3, 4, 5, 6, 7, 8, 9)
 tabla1_id_quin <- tabla1 %>% pivot_wider(id_cols = quinquenio, names_from = Área,
                                  values_from = c(sd, promedio, maximo, minimo, q1, median, q3) )
 
+<<<<<<< HEAD
 # pasar la tabla a formado long (la que está en el anexo)
 tabla1_id_area <- tabla1 %>% 
+=======
+tabla1_id_Área <- tabla1 %>% 
+>>>>>>> 50bb6e7abd01f5b16bdb26237c74c1a0a2356360
   pivot_longer(cols = c(sd, promedio, maximo, minimo, q1, median, q3),
-               names_to = 'Estadístico', values_to = 'Valor') %>%
-  pivot_wider(id_cols = c(Área, Estadístico), names_from = quinquenio, values_from = Valor)
+               names_to = 'Estadistico', values_to = 'Valor') %>%
+  pivot_wider(id_cols = c(Área, Estadistico), names_from = quinquenio, values_from = Valor)
 
 # tabla de la bitacora 2 con el promedio
 t1 <- prod_ban_gr %>%
@@ -102,11 +118,15 @@ tabla2 <- tabla2[with(tabla2, order(tabla2$Área)), c(2, 1, 3, 4, 5, 6, 7, 8, 9)
 tabla2_id_quin <- tabla1 %>% pivot_wider(id_cols = quinquenio, names_from = Área,
                                          values_from = c(sd, promedio, maximo, minimo, q1, median, q3) )
 
+<<<<<<< HEAD
 # pasar la tabla a formado long (la que está en el anexo)
 tabla2_id_area <- tabla2 %>% 
+=======
+tabla2_id_Área <- tabla2 %>% 
+>>>>>>> 50bb6e7abd01f5b16bdb26237c74c1a0a2356360
   pivot_longer(cols = c(sd, promedio, maximo, minimo, q1, median, q3),
-               names_to = 'Estadístico', values_to = 'Valor') %>%
-  pivot_wider(id_cols = c(Área, Estadístico), names_from = quinquenio, values_from = Valor)
+               names_to = 'Estadistico', values_to = 'Valor') %>%
+  pivot_wider(id_cols = c(Área, Estadistico), names_from = quinquenio, values_from = Valor)
 
 # tabla de la bitacora 2 con el promedio
 t2 <- prod_pin_gr %>%
@@ -152,11 +172,15 @@ tabla3 <- tabla3[with(tabla3, order(tabla3$Área)), c(2, 1, 3, 4, 5, 6, 7, 8, 9)
 tabla3_id_quin <- tabla3 %>% pivot_wider(id_cols = quinquenio, names_from = Área,
                                          values_from = c(sd, promedio, maximo, minimo, q1, median, q3) )
 
+<<<<<<< HEAD
 # pasar la tabla a formado long (la que está en el anexo)
 tabla3_id_area <- tabla3 %>% 
+=======
+tabla3_id_Área <- tabla3 %>% 
+>>>>>>> 50bb6e7abd01f5b16bdb26237c74c1a0a2356360
   pivot_longer(cols = c(sd, promedio, maximo, minimo, q1, median, q3),
-               names_to = 'Estadístico', values_to = 'Valor') %>%
-  pivot_wider(id_cols = c(Área, Estadístico), names_from = quinquenio, values_from = Valor)
+               names_to = 'Estadistico', values_to = 'Valor') %>%
+  pivot_wider(id_cols = c(Área, Estadistico), names_from = quinquenio, values_from = Valor)
 
 # tabla de la bitacora 2 con el promedio
 t3 <- prod_caf_gr %>%
@@ -195,10 +219,10 @@ ggsave(filename = "BoxPlot.pdf", width = w, height = h, plot = last_plot())
 
 # plot2
 
-prod_area_caf = data_limpia %>%
+prod_Área_caf = data_limpia %>%
   filter(Elemento %in% c('Área cosechada', 'Producción') & Producto == 'Café, verde')
 
-pr_ar_caf_pai <- prod_area_caf %>%
+pr_ar_caf_pai <- prod_Área_caf %>%
   filter(Área %in% c('Costa Rica', 'Brasil', 'Viet Nam')) %>%
   select(Área, Elemento, Valor, Año)
 
@@ -216,10 +240,11 @@ ggsave(filename = "LinePlot.pdf", width = w, height = h, plot = last_plot())
 
 # plot3
 
-area_pin = data_limpia %>%
+Área_pin = data_limpia %>%
   filter(Elemento %in% c('Área cosechada') & Producto == 'Piña tropical') %>%
   filter(Área %in% c('Costa Rica', 'Brasil', 'Filipinas'))
 
+<<<<<<< HEAD
 ggplot(area_pin, mapping = aes(x=Área, y=Valor, color=Área)) +
   geom_point(size=1.5) +
   labs(x = "País",
@@ -279,3 +304,117 @@ ggplot(prod_caf_pai, mapping = aes(x=Área, y=Valor, color=Área)) +
   theme_cowplot(12)
 
 ggsave(filename = "BoxPlotCaf.pdf", width = w, height = h, plot = last_plot())
+=======
+ggplot(Área_pin, mapping = aes(x=Área, y=Valor, color=Área)) +
+  geom_point() +
+  theme_cowplot(12)
+
+############
+#Pruebas de Hipotesis 
+
+#Roto las columnas para poder hacer el tes de ANOVA para 
+#BANANO
+
+paises_ban<-c("Colombia","Costa Rica","Ecuador")
+datosaov_ban<-t1 %>%
+ pivot_longer(cols=paises_ban,names_to = "Pais",values_to = "Produccion" )
+
+
+#Elimino las columnas inecesarias
+datosaov_ban<-datosaov_ban%>%
+  select(quinquenio,Pais,Produccion)
+
+modelo_anovaBan<-aov(Produccion ~ Pais, data = datosaov_ban)
+print(summary(modelo_anovaBan))
+
+###
+#Roto las columnas para poder hacer el tes de ANOVA para 
+#Cafe
+datosaov_caf<-t2 %>%
+  pivot_longer(cols=c("Brasil","Costa Rica","Filipinas"),names_to = "Pais",values_to = "Produccion" )
+
+#Elimino las columnas inecesarias
+datosaov_caf<-datosaov_caf%>%
+  select(quinquenio,Pais,Produccion)
+
+#Modelo ANOVA
+modelo_anovaCaf<-aov(Produccion ~ Pais, data = datosaov_caf)
+print(summary(modelo_anovaCaf))
+
+###
+#Roto las columnas para poder hacer el tes de ANOVA para 
+#PiñaTropical
+datosaov_pin<-t3 %>%
+  pivot_longer(cols=c("Brasil","Costa Rica","Viet Nam"),names_to = "Pais",values_to = "Produccion" )
+
+#Elimino las columnas inecesarias
+datosaov_pin<-datosaov_pin%>%
+  select(quinquenio,Pais,Produccion)
+
+#Modelo ANOVA
+# Realizar la prueba ANOVA
+modelo_anovaPin <- aov(Produccion ~ Pais, data = datosaov_pin)
+resumen_anovaPin <- summary(modelo_anovaPin)
+print(resumen_anovaPin)
+
+
+#T test
+#banano
+  
+  
+  res1_ban<-t.test(t1[["Colombia"]],t1[["Costa Rica"]])
+  res2_ban<-t.test(t1[["Colombia"]],t1[["Ecuador"]])  
+  res3_ban<-t.test(t1[["Ecuador"]],t1[["Costa Rica"]])  
+
+  print(res1_ban) 
+  print(res2_ban) 
+  print(res3_ban) 
+  
+  #Graficos
+
+  
+ # resumen_resultado <- tidy(res1_ban)
+  # Crear un vector con los nombres de las variables
+  #variables <- c("Costa Rica", "Colombia")
+  #valores_estimados <- c(resumen_resultado$estimate1, resumen_resultado$estimate2)
+  #intervalos_confianza <- c(resumen_resultado$conf.low, resumen_resultado$conf.high)
+  # barplot(valores_estimados, 
+   #       names.arg = variables, 
+    #      ylim = range(intervalos_confianza), 
+     #     col = "skyblue", 
+      #    main = "Resultados de la prueba t",
+       #   xlab = "Variable",
+        #  ylab = "Valor estimado")
+#  arrows(1:2, intervalos_confianza[1,], 1:2, intervalos_confianza[2,], angle = 90, code = 3, length = 0.1, col = "darkblue")
+
+  
+  
+  
+  
+  
+  
+
+  #T test
+  #cafe
+  
+  res1_caf<-t.test(t2[["Brasil"]],t2[["Costa Rica"]])
+  res2_caf<-t.test(t2[["Filipinas"]],t2[["Brasil"]])  
+  res3_caf<-t.test(t2[["Costa Rica"]],t2[["Filipinas"]])  
+  
+  print(res1_caf) 
+  print(res2_caf) 
+  print(res3_caf) 
+
+  #ttest
+  #Piña
+  
+  res1_pin<-t.test(t3[["Brasil"]],t3[["Costa Rica"]])
+  res2_pin<-t.test(t3[["Brasil"]],t3[["Viet Nam"]])  
+  res3_pin<-t.test(t3[["Viet Nam"]],t3[["Costa Rica"]])  
+  
+  print(res1_pin) 
+  print(res2_pin) 
+  print(res3_pin)  
+  
+  
+>>>>>>> 50bb6e7abd01f5b16bdb26237c74c1a0a2356360
