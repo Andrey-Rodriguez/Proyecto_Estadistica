@@ -8,24 +8,22 @@ library(ggplot2)
 library(readxl)
 library(xtable)
 library(cowplot)
-<<<<<<< HEAD
 
 #código para pasar tablas a .tex
 # print(xtable(-), include.rownames = FALSE)
 
 #data inicial (se cargan los datos totales)
 data = read.csv('cultivos_global.csv')
-=======
+
+
 library(broom)
 library(dplyr)
-# print(xtable(prod_ban_wide2), include.rownames = FALSE)
 
 #data incial
 cultivos_global <- read_csv("GitHub/Proyecto_Estadistica/cultivos_global.csv")
 data = cultivos_global
 data_limpia = cultivos_global %>%
           select(c('Área', 'Elemento', 'Producto', 'Año', 'Unidad', 'Valor'))
->>>>>>> 50bb6e7abd01f5b16bdb26237c74c1a0a2356360
 
 #seleccionamos las varibles relevantes.
 data_limpia = data %>%
@@ -64,12 +62,10 @@ tabla1 <- tabla1[with(tabla1, order(tabla1$Área)), c(2, 1, 3, 4, 5, 6, 7, 8, 9)
 tabla1_id_quin <- tabla1 %>% pivot_wider(id_cols = quinquenio, names_from = Área,
                                  values_from = c(sd, promedio, maximo, minimo, q1, median, q3) )
 
-<<<<<<< HEAD
 # pasar la tabla a formado long (la que está en el anexo)
 tabla1_id_area <- tabla1 %>% 
-=======
-tabla1_id_Área <- tabla1 %>% 
->>>>>>> 50bb6e7abd01f5b16bdb26237c74c1a0a2356360
+
+tabla1_id_Área <- tabla1 %>%
   pivot_longer(cols = c(sd, promedio, maximo, minimo, q1, median, q3),
                names_to = 'Estadistico', values_to = 'Valor') %>%
   pivot_wider(id_cols = c(Área, Estadistico), names_from = quinquenio, values_from = Valor)
@@ -118,12 +114,10 @@ tabla2 <- tabla2[with(tabla2, order(tabla2$Área)), c(2, 1, 3, 4, 5, 6, 7, 8, 9)
 tabla2_id_quin <- tabla1 %>% pivot_wider(id_cols = quinquenio, names_from = Área,
                                          values_from = c(sd, promedio, maximo, minimo, q1, median, q3) )
 
-<<<<<<< HEAD
 # pasar la tabla a formado long (la que está en el anexo)
 tabla2_id_area <- tabla2 %>% 
-=======
+
 tabla2_id_Área <- tabla2 %>% 
->>>>>>> 50bb6e7abd01f5b16bdb26237c74c1a0a2356360
   pivot_longer(cols = c(sd, promedio, maximo, minimo, q1, median, q3),
                names_to = 'Estadistico', values_to = 'Valor') %>%
   pivot_wider(id_cols = c(Área, Estadistico), names_from = quinquenio, values_from = Valor)
@@ -172,12 +166,8 @@ tabla3 <- tabla3[with(tabla3, order(tabla3$Área)), c(2, 1, 3, 4, 5, 6, 7, 8, 9)
 tabla3_id_quin <- tabla3 %>% pivot_wider(id_cols = quinquenio, names_from = Área,
                                          values_from = c(sd, promedio, maximo, minimo, q1, median, q3) )
 
-<<<<<<< HEAD
 # pasar la tabla a formado long (la que está en el anexo)
-tabla3_id_area <- tabla3 %>% 
-=======
 tabla3_id_Área <- tabla3 %>% 
->>>>>>> 50bb6e7abd01f5b16bdb26237c74c1a0a2356360
   pivot_longer(cols = c(sd, promedio, maximo, minimo, q1, median, q3),
                names_to = 'Estadistico', values_to = 'Valor') %>%
   pivot_wider(id_cols = c(Área, Estadistico), names_from = quinquenio, values_from = Valor)
@@ -244,7 +234,6 @@ ggsave(filename = "LinePlot.pdf", width = w, height = h, plot = last_plot())
   filter(Elemento %in% c('Área cosechada') & Producto == 'Piña tropical') %>%
   filter(Área %in% c('Costa Rica', 'Brasil', 'Filipinas'))
 
-<<<<<<< HEAD
 ggplot(area_pin, mapping = aes(x=Área, y=Valor, color=Área)) +
   geom_point(size=1.5) +
   labs(x = "País",
@@ -304,7 +293,7 @@ ggplot(prod_caf_pai, mapping = aes(x=Área, y=Valor, color=Área)) +
   theme_cowplot(12)
 
 ggsave(filename = "BoxPlotCaf.pdf", width = w, height = h, plot = last_plot())
-=======
+
 ggplot(Área_pin, mapping = aes(x=Área, y=Valor, color=Área)) +
   geom_point() +
   theme_cowplot(12)
@@ -416,5 +405,3 @@ print(resumen_anovaPin)
   print(res2_pin) 
   print(res3_pin)  
   
-  
->>>>>>> 50bb6e7abd01f5b16bdb26237c74c1a0a2356360
