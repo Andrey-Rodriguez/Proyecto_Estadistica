@@ -359,30 +359,19 @@ print(resumen_anovaPin)
   print(res2_ban) 
   print(res3_ban) 
   
-  #Graficos
-
-  
- # resumen_resultado <- tidy(res1_ban)
-  # Crear un vector con los nombres de las variables
-  #variables <- c("Costa Rica", "Colombia")
-  #valores_estimados <- c(resumen_resultado$estimate1, resumen_resultado$estimate2)
-  #intervalos_confianza <- c(resumen_resultado$conf.low, resumen_resultado$conf.high)
-  # barplot(valores_estimados, 
-   #       names.arg = variables, 
-    #      ylim = range(intervalos_confianza), 
-     #     col = "skyblue", 
-      #    main = "Resultados de la prueba t",
-       #   xlab = "Variable",
-        #  ylab = "Valor estimado")
-#  arrows(1:2, intervalos_confianza[1,], 1:2, intervalos_confianza[2,], angle = 90, code = 3, length = 0.1, col = "darkblue")
-
-  
-  
-  
-  
-  
+  wil1_ban<-wilcox.test(t1[["Colombia"]],t1[["Costa Rica"]],alternative="two.sided")
+  wil2_ban<-wilcox.test(t1[["Colombia"]],t1[["Ecuador"]],alternative="two.sided")
+  wil3_ban<-wilcox.test(t1[["Ecuador"]],t1[["Costa Rica"]],alternative="two.sided")
   
 
+  resultados_ban <- data.frame(
+    Prueba = c("Colombia vs. Costa Rica", "Colombia vs. Ecuador", "Ecuador vs. Costa Rica"),
+    Estadistica_U = c(wil1_ban$statistic, wil2_ban$statistic, wil3_ban$statistic),
+    Valor_p = c(wil1_ban$p.value, wil2_ban$p.value, wil3_ban$p.value)
+  )
+  
+  print(resultados)
+  
   #T test
   #cafe
   
@@ -394,6 +383,20 @@ print(resumen_anovaPin)
   print(res2_caf) 
   print(res3_caf) 
 
+  
+  wil1_caf<-wilcox.test(t2[["Brasil"]],t2[["Costa Rica"]],alternative = "two.sided")
+  wil2_caf<-wilcox.test(t2[["Filipinas"]],t2[["Brasil"]],alternative = "two.sided")  
+  wil3_caf<-wilcox.test(t2[["Costa Rica"]],t2[["Filipinas"]],alternative = "two.sided")  
+  
+  
+  resultados_caf <- data.frame(
+    Prueba = c("Brasil vs. Costa Rica", "Filipinas vs. Brasil", "Costa Rica vs. Filipinas"),
+    Estadistica_U = c(wil1_caf$statistic, wil2_caf$statistic, wil3_caf$statistic),
+    Valor_p = c(wil1_caf$p.value, wil2_caf$p.value, wil3_caf$p.value)
+  )
+  
+  print(resultados_caf)
+  
   #ttest
   #Piña
   
@@ -403,5 +406,17 @@ print(resumen_anovaPin)
   
   print(res1_pin) 
   print(res2_pin) 
-  print(res3_pin)  
+  print(res3_pin) 
+  
+  
+  wil1_pin<-wilcox.test(t3[["Brasil"]],t3[["Costa Rica"]],alternative = "two.sided")
+  wil2_pin<-wilcox.test(t3[["Brasil"]],t3[["Viet Nam"]],alternative = "two.sided")  
+  wil3_pin<-wilcox.test(t3[["Viet Nam"]],t3[["Costa Rica"]],alternative = "two.sided")  
+  
+  resultados_pin <- data.frame(
+    Prueba = c("Brasil vs. Costa Rica", "Brasil vs. Viet Nam", "Viet Nam vs. Costa Rica"),
+    Estadistica_U = c(wil1_pin$statistic, wil2_pin$statistic, wil3_pin$statistic),
+    Valor_p = c(wil1_pin$p.value, wil2_pin$p.value, wil3_pin$p.value)
+  )
+  print(resultados_pin)
   
