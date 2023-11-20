@@ -300,8 +300,9 @@ ggplot(Área_pin, mapping = aes(x=Área, y=Valor, color=Área)) +
 
 ############
 #Pruebas de Hipotesis 
+#ANOVA
 
-#Roto las columnas para poder hacer el tes de ANOVA para 
+#Se rotan las columnas para poder hacer el test del 
 #BANANO
 
 paises_ban<-c("Colombia","Costa Rica","Ecuador")
@@ -309,40 +310,46 @@ datosaov_ban<-t1 %>%
  pivot_longer(cols=paises_ban,names_to = "Pais",values_to = "Produccion" )
 
 
-#Elimino las columnas inecesarias
+#Se eliminan las columnas inecesarias
 datosaov_ban<-datosaov_ban%>%
   select(quinquenio,Pais,Produccion)
 
+#Se aplica la funcion de R aov que aplica el metodo ANOVA
 modelo_anovaBan<-aov(Produccion ~ Pais, data = datosaov_ban)
+
+#Imprime un resumen de los resultaos del metodo ANOVA
 print(summary(modelo_anovaBan))
 
 ###
-#Roto las columnas para poder hacer el tes de ANOVA para 
+#Roto las columnas para poder hacer el test de ANOVA para 
 #Cafe
 datosaov_caf<-t2 %>%
   pivot_longer(cols=c("Brasil","Costa Rica","Filipinas"),names_to = "Pais",values_to = "Produccion" )
 
-#Elimino las columnas inecesarias
+#Se elimina las columnas inecesarias
 datosaov_caf<-datosaov_caf%>%
   select(quinquenio,Pais,Produccion)
 
-#Modelo ANOVA
+#Se aplica la funcion de R aov que aplica el metodo ANOVA
 modelo_anovaCaf<-aov(Produccion ~ Pais, data = datosaov_caf)
+#Se imprime un resumen de los resultaos del metodo ANOVA
 print(summary(modelo_anovaCaf))
 
 ###
-#Roto las columnas para poder hacer el tes de ANOVA para 
+#Se rotan las columnas para poder hacer el tes de ANOVA para 
 #PiñaTropical
 datosaov_pin<-t3 %>%
   pivot_longer(cols=c("Brasil","Costa Rica","Viet Nam"),names_to = "Pais",values_to = "Produccion" )
 
-#Elimino las columnas inecesarias
+#Se eliminan las columnas inecesarias
 datosaov_pin<-datosaov_pin%>%
   select(quinquenio,Pais,Produccion)
 
 #Modelo ANOVA
 # Realizar la prueba ANOVA
 modelo_anovaPin <- aov(Produccion ~ Pais, data = datosaov_pin)
+
+#Imprime un resumen de los resultaos del metodo ANOVA
 resumen_anovaPin <- summary(modelo_anovaPin)
 print(resumen_anovaPin)
 
@@ -350,20 +357,30 @@ print(resumen_anovaPin)
 #T test
 #banano
   
-  
+  #Se va a comparar comparar cada uno de los productores de bananno selecionados 
+  #Se entiendo que el t-test solo compara dos bases de datos 
+  #Se inicia compararando las base de datos de Colombia y Costa Rica
   res1_ban<-t.test(t1[["Colombia"]],t1[["Costa Rica"]])
+  #Colombia y Ecuador
   res2_ban<-t.test(t1[["Colombia"]],t1[["Ecuador"]])  
+  #Ecuador y Costa Rica
   res3_ban<-t.test(t1[["Ecuador"]],t1[["Costa Rica"]])  
 
+  #Se imprimen los resultados 
   print(res1_ban) 
   print(res2_ban) 
   print(res3_ban) 
   
+  #Se comprende que el wilcox Test compara los datos de la misma manera que el Ttest 
+  #Se compara dos bases de datos 
+  #Colombia y Costa Rica
   wil1_ban<-wilcox.test(t1[["Colombia"]],t1[["Costa Rica"]],alternative="two.sided")
+  #Colombia y Ecuador 
   wil2_ban<-wilcox.test(t1[["Colombia"]],t1[["Ecuador"]],alternative="two.sided")
+  #Ecuador y Costa Rica 
   wil3_ban<-wilcox.test(t1[["Ecuador"]],t1[["Costa Rica"]],alternative="two.sided")
   
-
+  #se imprime los reultados resumidos en un df
   resultados_ban <- data.frame(
     Prueba = c("Colombia vs. Costa Rica", "Colombia vs. Ecuador", "Ecuador vs. Costa Rica"),
     Estadistica_U = c(wil1_ban$statistic, wil2_ban$statistic, wil3_ban$statistic),
@@ -372,23 +389,31 @@ print(resumen_anovaPin)
   
   print(resultados)
   
-  #T test
-  #cafe
   
+  #Se va a realizar el mismo procedimiento que se realizo con el banano con el producto del cafe 
+  #T test
+  
+  #Brasil vs Costa Rica
   res1_caf<-t.test(t2[["Brasil"]],t2[["Costa Rica"]])
+  #filipinas vs Brasil
   res2_caf<-t.test(t2[["Filipinas"]],t2[["Brasil"]])  
+  #Costa Rica vs Filipinas
   res3_caf<-t.test(t2[["Costa Rica"]],t2[["Filipinas"]])  
   
+  #imprime los resultados 
   print(res1_caf) 
   print(res2_caf) 
   print(res3_caf) 
 
   
+ #Brasil vs Costa Rica
   wil1_caf<-wilcox.test(t2[["Brasil"]],t2[["Costa Rica"]],alternative = "two.sided")
+  #Filipinas vs Brasil
   wil2_caf<-wilcox.test(t2[["Filipinas"]],t2[["Brasil"]],alternative = "two.sided")  
+  #Costa Rica vs Filipinas
   wil3_caf<-wilcox.test(t2[["Costa Rica"]],t2[["Filipinas"]],alternative = "two.sided")  
   
-  
+  #imprime los resultados de manera resumida
   resultados_caf <- data.frame(
     Prueba = c("Brasil vs. Costa Rica", "Filipinas vs. Brasil", "Costa Rica vs. Filipinas"),
     Estadistica_U = c(wil1_caf$statistic, wil2_caf$statistic, wil3_caf$statistic),
@@ -397,22 +422,29 @@ print(resumen_anovaPin)
   
   print(resultados_caf)
   
-  #ttest
-  #Piña
+  #Se va a realizar el mismo procedimiento que se realizo con el banano y el cafe  con el producto de la piña 
+  #T test
   
+  #Brasil vs Costa Rica
   res1_pin<-t.test(t3[["Brasil"]],t3[["Costa Rica"]])
+  #Brasil vs Vietnam
   res2_pin<-t.test(t3[["Brasil"]],t3[["Viet Nam"]])  
+  #vietnam vs Costa Rica
   res3_pin<-t.test(t3[["Viet Nam"]],t3[["Costa Rica"]])  
   
+  #imprime los resultados
   print(res1_pin) 
   print(res2_pin) 
   print(res3_pin) 
   
-  
+  #Wilcox test
+  #Brasil vs Costa Rica
   wil1_pin<-wilcox.test(t3[["Brasil"]],t3[["Costa Rica"]],alternative = "two.sided")
+  #Brasil vs Vietnam
   wil2_pin<-wilcox.test(t3[["Brasil"]],t3[["Viet Nam"]],alternative = "two.sided")  
+  #vietnam vs Costa Rica
   wil3_pin<-wilcox.test(t3[["Viet Nam"]],t3[["Costa Rica"]],alternative = "two.sided")  
-  
+  #imprime los resultados de manera resumida
   resultados_pin <- data.frame(
     Prueba = c("Brasil vs. Costa Rica", "Brasil vs. Viet Nam", "Viet Nam vs. Costa Rica"),
     Estadistica_U = c(wil1_pin$statistic, wil2_pin$statistic, wil3_pin$statistic),
