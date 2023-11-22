@@ -394,61 +394,61 @@ print(resumen_anovaPin)
   #T test
   
   #Brasil vs Costa Rica
-  res1_caf<-t.test(t2[["Brasil"]],t2[["Costa Rica"]])
+  res1_pin<-t.test(t2[["Brasil"]],t2[["Costa Rica"]])
   #filipinas vs Brasil
-  res2_caf<-t.test(t2[["Filipinas"]],t2[["Brasil"]])  
+  res2_pin<-t.test(t2[["Filipinas"]],t2[["Brasil"]])  
   #Costa Rica vs Filipinas
-  res3_caf<-t.test(t2[["Costa Rica"]],t2[["Filipinas"]])  
+  res3_pin<-t.test(t2[["Costa Rica"]],t2[["Filipinas"]])  
   
   #imprime los resultados 
-  print(res1_caf) 
-  print(res2_caf) 
-  print(res3_caf) 
-
-  
- #Brasil vs Costa Rica
-  wil1_caf<-wilcox.test(t2[["Brasil"]],t2[["Costa Rica"]],alternative = "two.sided")
-  #Filipinas vs Brasil
-  wil2_caf<-wilcox.test(t2[["Filipinas"]],t2[["Brasil"]],alternative = "two.sided")  
-  #Costa Rica vs Filipinas
-  wil3_caf<-wilcox.test(t2[["Costa Rica"]],t2[["Filipinas"]],alternative = "two.sided")  
-  
-  #imprime los resultados de manera resumida
-  resultados_caf <- data.frame(
-    Prueba = c("Brasil vs. Costa Rica", "Filipinas vs. Brasil", "Costa Rica vs. Filipinas"),
-    Estadistica_U = c(wil1_caf$statistic, wil2_caf$statistic, wil3_caf$statistic),
-    Valor_p = c(wil1_caf$p.value, wil2_caf$p.value, wil3_caf$p.value)
-  )
-  
-  print(resultados_caf)
-  
-  #Se va a realizar el mismo procedimiento que se realizo con el banano y el cafe  con el producto de la piña 
-  #T test
-  
-  #Brasil vs Costa Rica
-  res1_pin<-t.test(t3[["Brasil"]],t3[["Costa Rica"]])
-  #Brasil vs Vietnam
-  res2_pin<-t.test(t3[["Brasil"]],t3[["Viet Nam"]])  
-  #vietnam vs Costa Rica
-  res3_pin<-t.test(t3[["Viet Nam"]],t3[["Costa Rica"]])  
-  
-  #imprime los resultados
   print(res1_pin) 
   print(res2_pin) 
   print(res3_pin) 
+
   
-  #Wilcox test
-  #Brasil vs Costa Rica
-  wil1_pin<-wilcox.test(t3[["Brasil"]],t3[["Costa Rica"]],alternative = "two.sided")
-  #Brasil vs Vietnam
-  wil2_pin<-wilcox.test(t3[["Brasil"]],t3[["Viet Nam"]],alternative = "two.sided")  
-  #vietnam vs Costa Rica
-  wil3_pin<-wilcox.test(t3[["Viet Nam"]],t3[["Costa Rica"]],alternative = "two.sided")  
+ #Brasil vs Costa Rica
+  wil1_pin<-wilcox.test(t2[["Brasil"]],t2[["Costa Rica"]],alternative = "two.sided")
+  #Filipinas vs Brasil
+  wil2_pin<-wilcox.test(t2[["Filipinas"]],t2[["Brasil"]],alternative = "two.sided")  
+  #Costa Rica vs Filipinas
+  wil3_pin<-wilcox.test(t2[["Costa Rica"]],t2[["Filipinas"]],alternative = "two.sided")  
+  
   #imprime los resultados de manera resumida
   resultados_pin <- data.frame(
-    Prueba = c("Brasil vs. Costa Rica", "Brasil vs. Viet Nam", "Viet Nam vs. Costa Rica"),
+    Prueba = c("Brasil vs. Costa Rica", "Filipinas vs. Brasil", "Costa Rica vs. Filipinas"),
     Estadistica_U = c(wil1_pin$statistic, wil2_pin$statistic, wil3_pin$statistic),
     Valor_p = c(wil1_pin$p.value, wil2_pin$p.value, wil3_pin$p.value)
   )
+  
   print(resultados_pin)
+  
+  #Se va a realizar el mismo procedimiento que se realizo con el banano y el cafe  con el producto de la cafe 
+  #T test
+  
+  #Brasil vs Costa Rica
+  res1_caf<-t.test(t3[["Brasil"]],t3[["Costa Rica"]])
+  #Brasil vs Vietnam
+  res2_caf<-t.test(t3[["Brasil"]],t3[["Viet Nam"]])  
+  #vietnam vs Costa Rica
+  res3_caf<-t.test(t3[["Viet Nam"]],t3[["Costa Rica"]])  
+  
+  #imprime los resultados
+  print(res1_caf) 
+  print(res2_caf) 
+  print(res3_caf) 
+  
+  #Wilcox test
+  #Brasil vs Costa Rica
+  wil1_caf<-wilcox.test(t3[["Brasil"]],t3[["Costa Rica"]],alternative = "two.sided")
+  #Brasil vs Vietnam
+  wil2_caf<-wilcox.test(t3[["Brasil"]],t3[["Viet Nam"]],alternative = "two.sided")  
+  #vietnam vs Costa Rica
+  wil3_caf<-wilcox.test(t3[["Viet Nam"]],t3[["Costa Rica"]],alternative = "two.sided")  
+  #imprime los resultados de manera resumida
+  resultados_caf <- data.frame(
+    Prueba = c("Brasil vs. Costa Rica", "Brasil vs. Viet Nam", "Viet Nam vs. Costa Rica"),
+    Estadistica_U = c(wil1_caf$statistic, wil2_caf$statistic, wil3_caf$statistic),
+    Valor_p = c(wil1_caf$p.value, wil2_caf$p.value, wil3_caf$p.value)
+  )
+  print(resultados_caf)
   
